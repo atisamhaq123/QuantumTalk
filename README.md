@@ -1,7 +1,5 @@
 # ChatNexus
-Sure, here's a sample README file for a chat room application:
-
-This is a simple chat room application that allows users to join chat rooms and communicate with each other in real-time.
+ChatNexus is a chat room application that allows users to join chat rooms and communicate with each other in real-time.
 
 ## Features
 - Join or create a new chat room
@@ -39,12 +37,3 @@ If you'd like to contribute to this project, please follow these steps:
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.
 
-## Acknowledgments
-
-- Thanks to Socket.IO for providing real-time communication capabilities
-- Thanks to MongoDB for providing a flexible and scalable database solution
-- Thanks to Bootstrap for providing a responsive and user-friendly design framework
-
-## Contact
-
-If you have any questions or concerns, please contact the project owner at your-email-address.
