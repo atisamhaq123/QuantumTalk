@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ChatNexus</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel = "stylesheet" href="style.css">
+	<script>
+		var name = prompt("Please enter your name");
+	</script>
+</head>
+<body>
+    
+    <div id="intro">
+      <h1>ChatNexus</h1>
+	
+    </div>
+    
+    <ul id="messages"></ul>
+    
+    <form action="">
+      <input id="m" placeholder="Enter your message..." autocomplete="off" required /><button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+			
+    		var socket = io();
+	
+    		socket.emit('joining msg', name);
+
+    		$('form').submit(function(e) {
+    			e.preventDefault();            // will prevent page reloading
+				rid=randomId();
+      			socket.emit('chatmessage', (name + ':  ' + $('#m').val()+`@@${rid}`));
+                $('#messages').append($(`<li class="list" id='${rid}' onclick="like(this)"> `).text('You:  ' + $('#m').val()));
+      			$('#m').val('');
+      			return false;
+    		});
+    		socket.on('chatmessage', function(msg){
+				ridd=msg.split("@@")[1]
+				msgg=msg.split("@@")[0]
+				if (ridd=='1'){
+					$('#messages').append($(`<li>`).text(msgg));
+				}
+				else{
+					$('#messages').append($(`<li id="${ridd}" onclick='like(this)'>`).text(msgg));
+				}
+      			
+    		});
+			socket.on('reaction', function(id){
+      			document.getElementById(id).style.color = "#ff0000";
+    		});
+		
+  		
+    </script>
+
+	<script>
+		function like(value){
+			debugger;
+			value.style.color = "#ff0000";
+			socket.emit('reaction', value.id);
+		}
+
+		function randomId(){
+			debugger;
+			var rid = Math.random().toString(36).substring(2,7);
+			return rid;
+		}
+	</script>
+</body>
+</html>
