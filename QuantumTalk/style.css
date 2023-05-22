@@ -1,0 +1,125 @@
+#userList {
+    border: 1px;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #2E343D;
+    color: white;
+    margin-top: 0.5rem;
+    
+  }
+
+  .private-chat-container .row{
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+  .msg span{
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+  .user{
+    padding-top:  1rem;
+    padding-bottom: 1rem;
+  }
+  .user .dot{
+    padding-right: 1px;
+  }
+  #userList div:hover{
+    background-color: #353b44;
+  }
+ 
+  .container{
+    background-color: #202329;
+    border-radius: 14px;
+   
+  }
+  .user-list-item {
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  .header{
+    background-color: azure;
+    border-radius: 20px;
+  }
+
+
+.private-chat-container {
+	padding-left: 3px;
+  padding-right: 3px;
+	margin-bottom: 10px;
+  }
+.private-chat-container .msg{
+    border-radius: 10px;
+    padding: 5px;
+    background-image: linear-gradient(to right, #405DE6, #5851DB);
+    width:10%
+  }
+  .private-chat-container .col{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  #messageList{
+    background-color: transparent;
+    color: white;
+    overflow-x: hidden;
+    overflow-y: scroll; 
+    scrollbar-width: thin; /* Set the width of the scroll bar */
+    scrollbar-color: transparent;
+    height:450px;
+    margin-top: 1rem;
+  }
+
+  .user-list-item {
+	cursor: pointer;
+  }
+
+  .hidden {
+	display: none;
+  }
+
+.dot{
+  width: 7px;
+  height: 7px;
+  background-color: green;
+  border-radius: 50%;
+}
+body{
+  background-color: black;
+  
+}
+h3, p, h4, h5,b{
+  color:white
+}
+
+
+.undread{
+  width: 7px;
+  height: 7px;
+  background-color: blue;
+  border-radius: 50%;
+    /* Other styles for the dot */
+  }
+
+
+/* Customize the appearance of the scroll bar */
+#messageList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#messageList::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+#messageList::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.like{
+  background-image: url("assets/heart.png");
+}
+.Heading{
+  color:white;
+  background-color: black;
+  height: 30px;
+}
+  

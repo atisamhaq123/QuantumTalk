@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuantumTalk</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.socket.io/4.2.0/socket.io.js"></script>
+</head>
+<body>
+  <div class="container mt-4">
+	<div class="row header">
+		<div class="col-auto"><img src="assets/logo.PNG" style="height: 60px;width: 130px;"></div>
+		<div class="col d-flex justify-content-end align-items-center"><span id="myname"></span><div class="dot mt-3"></div></div>
+  </div>
+    
+  <div class="row Heading">
+    <div class="col-3"></div>
+    <div class="col-9 ">
+        <div class="mt-1"><b id="ChatUser"></b></div>
+    </div>
+  </div>
+  
+	<div class="row px-0">
+    <div class="col-3">
+      <b class="">Live Users</b>
+       <div id="userList"></div>
+    </div>
+    <div class="col-9">
+      <div id="messageList" class="mb-1"></div>
+  
+      <form onsubmit="sendMessage(event)">
+        <div class="row mb-1 ">
+          <div class="col-10"> <input type="text" id="message" class="form-control col-12" placeholder="message..."></div>
+          <div class="col-2"><input type="submit" class="btn btn-primary" value="Send"></div>
+        </div>
+      </form>
+
+      <div class="form-group" style="display: none;">
+        <label for="receiverId">Receiver ID:</label>
+        <input type="text" id="receiverId" class="form-control" placeholder="Receiver ID">
+      </div>
+
+      <div id="userIdContainer" class="mt-4" style="display: none;">
+        <strong>Your ID:</strong> <span id="userId"></span>
+      </div>
+
+    </div>
+  </div>
+    
+
+
+ 
+  
+
+  <script>
+
+    const socket = io();
+    const messageGroups = {};
+    let currentDisplayedUser = null;
+    idsWithNames={};
+	//
+	var namez = prompt("Enter Username");
+  function MsgidGenerate() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+  
+}
+	//
+    // Emit private message
+    function sendMessage() {
+      event.preventDefault();
+      const receiverId = document.getElementById('receiverId').value;
+      const message = document.getElementById('message').value;
+      if (receiverId.trim().length<1 || message.trim().length<1){
+        return
+      }
+      
+      const data = { receiverId, message };
+      socket.emit('U_message', data);
+      socket.emit('privateMessage', data);
+    }
+
+    // Display the received message in the list
+    function displayMessage(message,store) {
+      const messageList = document.getElementById('messageList');
+      const senderId = message.senderId;
+      const messageContainer = document.createElement('div');
+      messageContainer.className = 'private-chat-container';
+      msgidGenerate=MsgidGenerate();
+      //messageContainer.textContent = `From: ${senderId} - Message: ${message.message}`;
+      if (message.mine){
+        //you
+        messageContainer.innerHTML = `<div class="row"><div class="col"></div><div class="col msg" id='chat%${msgidGenerate}' onclick='LikeIt(this)' style='text-align:right'><span>${message.message}</span></div></div><div class='row'><div class='col'></div><div style="margin-top:-1.5%" class='col'><img style="height:16px;width:14px;margin-left:2px" src="" id='${msgidGenerate}'></div></div>`;
+      }
+      else{
+        //messageContainer.innerHTML = `<div>${message.name}: ${message.message}</div>`;
+        messageContainer.innerHTML = `<div class="row"><div class="col msg" id='chat%${msgidGenerate}' onclick='LikeIt(this)' style='text-align:left'><span>${message.message}</span></div><div class="col"></div></div><div class='row'><div style="margin-top:-1.5%" class='col px-0'><img style="height:16px;width:14px;margin-left:7px" src="" id='${msgidGenerate}'></div><div class='col'></div></div>`;
+      }
+     
+
+      // Check if a message group for the sender ID exists
+      if (messageGroups[senderId]) {
+        // Append the message to the existing message group
+        messageGroups[senderId].appendChild(messageContainer);
+      } else {
+        // Create a new message group for the sender ID
+        messageGroups[senderId] = document.createElement('div');
+        messageGroups[senderId].appendChild(messageContainer);
+        messageList.appendChild(messageGroups[senderId]);
+      }
+
+      // Hide other message groups
+      for (let id in messageGroups) {
+        if (store==undefined){
+          if (id !== senderId) {
+          messageGroups[id].classList.add('hidden');
+          }
+        }
+        else{
+          messageGroups[id].classList.add('hidden');
+        }
+        
+      }
+      document.getElementById('ChatUser').innerText=idsWithNames[senderId];
+      scroll();
+    }
+
+   // Display the chat for a specific user
+function displayUserChat(userId) {
+  // Remove the "hidden" class from the user's message group
+  if (messageGroups[userId]) {
+    messageGroups[userId].classList.remove('hidden');
+  }
+
+  // Hide other message groups
+  for (let id in messageGroups) {
+    if (id !== userId) {
+      messageGroups[id].classList.add('hidden');
+    }
+  }
+}
+
+function setReceiverID(value){
+document.getElementById('receiverId').value=value.id.trim();
+document.getElementById('ChatUser').innerText=value.innerText;
+value.getElementsByClassName("isread")[0].classList.remove("undread")
+all_users=document.getElementById("userList").getElementsByClassName('user');
+for (let i=0;i<all_users.length;i++){
+    if (all_users[i].id==value.id){
+      value.style.backgroundColor="#333b46";
+    }
+    else{
+      all_users[i].style.backgroundColor="transparent";
+    }
+  }
+}
+
+function LikeIt(value){
+  likeIID=value.id.split("%")[1];
+  socket.emit("likeit",likeIID);
+}
+
+// Generate the user list
+function generateUserList(userIds) {
+  const userList = document.getElementById('userList');
+
+  // Clear the user list
+  //userList.innerHTML = '';
+
+  // Create a list item for each user
+  for (let userId of userIds) {
+      if (!document.getElementById(userId)){
+      const listItem = document.createElement('div');
+      listItem.setAttribute("id",userId);
+      listItem.setAttribute("onclick",`setReceiverID(this)`)
+      listItem.className = 'user-list-item user align-items-center d-flex';
+      listItem.textContent = "";
+
+      // Add a click event listener to display the chat for the user
+      listItem.addEventListener('click', () => {
+        displayUserChat(userId);
+      });
+
+      // Append the list item to the user list
+      userList.appendChild(listItem);
+    }
+  }
+}
+// Receive name
+socket.on('receiveName', (nimmm) => {
+	document.getElementById("myname").innerText=nimmm;
+});
+// Like message
+socket.on('likeitNow', (idToLike) => {
+	msgtobeliked=document.getElementById(idToLike);
+  if (msgtobeliked){
+    msgtobeliked.src="assets/heart.png";
+  }
+});
+// Listen for private messages
+socket.on('privateMessage', (message) => {
+  console.log('Private message received:', message);
+  // Display the message
+  if (document.getElementById('receiverId').value==message.senderId){
+    displayMessage(message); // Display the message
+    setReceiverID(document.getElementById(message.senderId));
+  }
+  else{
+    displayMessage(message,1);
+    document.getElementById(message.senderId).getElementsByClassName("isread")[0].classList.add("undread");
+  }
+
+});
+
+// Listen for error messages
+socket.on('errorMessage', (error) => {
+  console.log('Error:', error);
+  // Handle the error message
+});
+
+// Listen for user ID
+socket.on('userId', (userId) => {
+  console.log('User ID received:', userId);
+  const userIdElement = document.getElementById('userId');
+  userIdElement.textContent = userId;
+  
+  socket.emit('sendname', namez);
+
+});
+
+// Listen for connected users
+socket.on('userList', (userIds) => {
+  console.log('Connected users:', userIds);
+  // Generate the user list
+  userIds = userIds.filter(function(item){ return item != socket.id })
+  generateUserList(userIds);
+});
+
+// Listen for connected users' names
+socket.on('SetNames', function(data){
+  // Generate the user list
+  all_users=document.getElementById("userList").getElementsByClassName('user');  
+  for (let i=0;i<all_users.length;i++){
+    if (!(document.getElementById(all_users[i].id.trim()).innerHTML.trim().length>0)){
+      document.getElementById(all_users[i].id.trim()).innerHTML="<div>&nbsp;"+data[all_users[i].id]+"</div><div style='flex-grow: 1; display: flex; justify-content: flex-end;'><div class='isread'></div></div>";
+      const div=document.createElement("div");
+      div.setAttribute('class',"dot")
+      document.getElementById(all_users[i].id.trim()).prepend(div)
+    }
+  }
+  idsWithNames=data;
+});
+
+socket.on('Get_U_message', (message) =>{
+  displayMessage(message);
+});
+
+socket.on('disconnected', function(id){
+  if (document.getElementById(id)){
+    document.getElementById(id).remove();
+  }
+  if (document.getElementById("receiverId").value==id){
+    document.getElementById("receiverId").value="";
+    document.getElementById("ChatUser").innerText="";
+    document.getElementById("messageList").innerHTML="";
+    
+  }
+});
+
+
+
+//scroll chat
+function scroll(){
+    var element = document.getElementById("messageList");
+    element.scrollTop = element.scrollHeight;
+}
+</script>
+
+
+</div>
+</body>
+</html>
+
+
