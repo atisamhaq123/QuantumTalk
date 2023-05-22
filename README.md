@@ -9,6 +9,7 @@ QuantumTalk is an exceptional, cutting-edge web-based chat application that prov
 - Get notified about new messages
 - Get notified about undread messages
 - See live users 
+- Like messages
 - Leave chat room
 
 ## Technologies Used
