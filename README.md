@@ -1,4 +1,4 @@
-# ChatNexus
+# QuantumTalk
 ChatNexus is an exceptional, cutting-edge web-based chat application that provides users with unparalleled real-time communication capabilities in vibrant chat rooms...
 
 <img src ="https://github.com/atisamhaq123/ChatNexus/blob/main/image/asa.PNG">
