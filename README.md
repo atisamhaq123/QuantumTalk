@@ -4,7 +4,6 @@ QuantumTalk is an exceptional, cutting-edge web-based chat application that prov
 <img src ="https://github.com/atisamhaq123/QuantumTalk/blob/main/image/Capture.PNG">
 
 ## Features
-- Join or create a new chat room
 - Send and receive messages in real-time
 - Get notified about new messages
 - Get notified about undread messages
