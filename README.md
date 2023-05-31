@@ -21,7 +21,7 @@ QuantumTalk is an exceptional, cutting-edge web-based chat application that prov
 - HTML5
 
 ## Description
-- Design: I've created a sleek and modern design for our application, incorporating a black background that adds an element of sophistication and style..
+- Design: I've created a sleek and modern design for our application, incorporating a black background that adds an element of sophistication and style.
 
 - Live User List: The side list I've implemented displays live users, giving real-time visibility into who's currently online and active within the application.
 
