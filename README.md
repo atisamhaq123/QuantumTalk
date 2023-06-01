@@ -39,7 +39,7 @@ QuantumTalk is an exceptional, cutting-edge web-based chat application that prov
 
 - Minimalist Approach: I've adopted a minimalist approach, focusing on essential elements and eliminating unnecessary clutter to create a clean and uncluttered interface that enhances usability.
 
-- Engaging Experience: Through thoughtful design decisions, I aim to create an engaging user experience that encourages interaction and fosters a sense of community among users, making the application a platform they'll want to return to.
+- Engaging Experience: Through thoughtful design decisions, I aim to create an engaging user experience that encourages interaction and fosters a sense of community among users, making the application a platform they'll want to return to..
 
 ## License
 
