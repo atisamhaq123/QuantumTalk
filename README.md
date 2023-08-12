@@ -1,5 +1,5 @@
 # QuantumTalk
-QuantumTalk is an exceptional, cutting-edge web-based chat application that provides users with unparalleled real-time communication capabilities.....
+QuantumTalk is an exceptional, cutting-edge web-based chat application that provides users with unparalleled real-time communication capabilities......
 
 <img src ="https://github.com/atisamhaq123/QuantumTalk/blob/main/image/Capture.PNG">
 
